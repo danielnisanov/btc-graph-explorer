@@ -25,11 +25,15 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "0.13.8",
+    "@types/three": "0.181.0",
     "babel-plugin-react-compiler": "1.0.0",
+    "force-graph": "1.51.0",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "zod": "4.1.12"
+    "three": "0.181.0",
+    "zod": "4.1.12",
+    "zustand": "5.0.8"
   },
   "devDependencies": {
     "@commitlint/cli": "20.1.0",
@@ -42,6 +46,8 @@
     "eslint": "9.39.1",
     "eslint-config-next": "16.0.1",
     "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-typescript": "4.4.4",
+    "eslint-plugin-import": "2.32.0",
     "eslint-plugin-prettier": "5.5.4",
     "husky": "9.1.7",
     "lint-staged": "16.2.6",
