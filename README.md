@@ -1,9 +1,3 @@
-Absolutely — here is the **final README.md**, fully formatted in clean Markdown, ready to paste directly into your project.
-
-I kept headings, lists, code blocks, tables, and spacing exactly how a professional GitHub README should look.
-
----
-
 # 🪙 BTC Graph Explorer
 
 Interactive blockchain investigation tool that visualizes **Bitcoin transactions** as a dynamic graph.
