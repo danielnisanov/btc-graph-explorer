@@ -277,33 +277,6 @@ The bottom-right API log panel shows:
 
 ---
 
-## � Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/YourFeature`)
-3. Commit changes (`git commit -m 'Add YourFeature'`)
-4. Push to branch (`git push origin feature/YourFeature`)
-5. Open a Pull Request
-
----
-
-## 📝 License
-
-MIT License – See LICENSE file for details
-
----
-
-## 🙋 Support & Issues
-
-Found a bug? Have a feature request?
-
-- **GitHub Issues**: [Create an issue](https://github.com/danielnisanov/btc-graph-explorer/issues)
-- **Discussions**: [Start a discussion](https://github.com/danielnisanov/btc-graph-explorer/discussions)
-
----
-
 ## 📚 Resources & References
 
 - [Bitcoin Address Formats](https://en.bitcoin.it/wiki/Address)
@@ -312,7 +285,3 @@ Found a bug? Have a feature request?
 - [Next.js 16 Documentation](https://nextjs.org/docs)
 - [Zustand State Management](https://github.com/pmndrs/zustand)
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
-
----
-
-**Made with ❤️ for blockchain investigation**
