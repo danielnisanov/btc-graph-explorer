@@ -295,7 +295,7 @@ page.route('**/api/blockchain**', route =>
 ## 📚 References
 
 * [https://en.bitcoin.it/wiki/Address](https://en.bitcoin.it/wiki/Address)
-* [https://mempool.space/docs/api](https://mempool.space/docs/api)
+* [https://github.com/vasturiano/force-graph](https://github.com/vasturiano/force-graph)
 * [https://github.com/vasturiano/force-graph](https://github.com/vasturiano/force-graph)
 * [https://nextjs.org/docs](https://nextjs.org/docs)
 * [https://github.com/pmndrs/zustand](https://github.com/pmndrs/zustand)
