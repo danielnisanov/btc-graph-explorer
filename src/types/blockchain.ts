@@ -32,6 +32,8 @@ export interface TransactionOutput {
 
 // API Response from blockchain.info
 export interface BlockchainApiResponse {
+  cacheTimestamp: string | number | Date;
+  cached: any;
   address: string;
   n_tx: number;
   total_received: number;

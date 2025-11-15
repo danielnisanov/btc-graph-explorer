@@ -1,43 +1,40 @@
 'use client';
 
 import { BlockchainGraph } from '@/components/graph/BlockchainGraph';
+import { AddressDetails } from '@/components/panels/AddressDetails';
+import { ApiLogWindow } from '@/components/panels/ApiLogWindow';
 import { SearchBar } from '@/components/SearchBar';
 import { useBlockchainData } from '@/hooks/useBlockchainData';
 import { useGraphStore } from '@/store/graphStore';
 
 export default function HomePage() {
-  // Get blockchain data hook
   const { loadInitialAddress, isLoading, error, clearError } = useBlockchainData();
-
-  // Get graph data from store
   const graphData = useGraphStore((state) => state.graphData);
 
-  /**
-   * Handle address search
-   * This is called when user submits an address in SearchBar
-   */
   const handleSearch = async (address: string) => {
-    // Clear any previous errors
     clearError();
-
-    // Clear the graph before loading new address
     useGraphStore.getState().clearGraph();
-
-    // Load the new address
     await loadInitialAddress(address);
+
+    // Auto-select the searched address after loading
+    setTimeout(() => {
+      useGraphStore.getState().setSelectedNode(address);
+    }, 500); // Small delay to let graph render
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto py-8 px-4">
-        {/* Search Bar */}
-        <SearchBar onSearch={handleSearch} isLoading={isLoading} error={error} />
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+      <div className="container mx-auto py-6 px-6 max-w-[1440px]">
+        {/* Search Bar (top) */}
+        <div className="mb-6">
+          <SearchBar onSearch={handleSearch} isLoading={isLoading} error={error} />
+        </div>
 
-        {/* Graph Section */}
-        <div className="mt-8">
+        {/* Main Content Area */}
+        <div className="mt-2">
           {graphData.nodes.length === 0 ? (
             // Empty state - show when no data loaded
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-16 text-center">
+            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur rounded-2xl shadow-xl p-16 text-center border border-slate-200/70 dark:border-slate-800">
               <svg className="mx-auto h-24 w-24 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
@@ -67,36 +64,53 @@ export default function HomePage() {
               </div>
             </div>
           ) : (
-            // Graph view - show when data is loaded
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-              {/* Graph stats header */}
-              <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Transaction Network</h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      Showing {graphData.nodes.length} addresses and {graphData.links.length} transactions
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => useGraphStore.getState().clearGraph()}
-                    className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    🗑️ Clear Graph
-                  </button>
-                </div>
-              </div>
+            // Graph view with sidebar - GRID layout
+            <div className="grid grid-cols-[360px_1fr] gap-6">
+              {/* LEFT SIDEBAR: Address Details */}
+              <aside
+                className="w-full bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-800"
+                style={{ minHeight: 'calc(100vh - 200px)' }}
+              >
+                <AddressDetails />
+              </aside>
 
-              {/* The Graph */}
-              <div className="w-full p-4">
-                <div className="mx-auto" style={{ maxWidth: '1200px' }}>
-                  <BlockchainGraph width={1200} height={600} />
+              {/* RIGHT SIDE: Graph */}
+              <section
+                className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-800"
+                style={{ minHeight: 'calc(100vh - 200px)' }}
+              >
+                {/* Graph stats header */}
+                <div className="px-6 py-4 bg-slate-50/70 dark:bg-slate-900/70 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white">
+                        Transaction Network
+                      </h2>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        Showing {graphData.nodes.length} addresses and {graphData.links.length} transactions
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => useGraphStore.getState().clearGraph()}
+                      className="px-3.5 py-2 text-sm rounded-lg font-medium flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200"
+                    >
+                      Clear Graph
+                    </button>
+                  </div>
                 </div>
-              </div>
+
+                {/* The Graph */}
+                <div className="w-full p-6 h-[700px] flex items-center justify-center">
+                  <BlockchainGraph width={1000} height={650} />
+                </div>
+              </section>
             </div>
           )}
         </div>
       </div>
+
+      {/* API Log Window - Fixed at bottom */}
+      <ApiLogWindow />
     </main>
   );
 }

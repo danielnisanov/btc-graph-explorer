@@ -26,10 +26,25 @@ export const useGraphStore = create<GraphState>((set, get) => ({
 
   addNode: (node) =>
     set((state) => {
-      // Check if node already exists
-      const exists = state.graphData.nodes.some((n) => n.id === node.id);
-      if (exists) return state;
+      const existingIndex = state.graphData.nodes.findIndex((n) => n.id === node.id);
 
+      if (existingIndex >= 0) {
+        // Node exists - MERGE the new data with existing data
+        const updatedNodes = [...state.graphData.nodes];
+        updatedNodes[existingIndex] = {
+          ...updatedNodes[existingIndex], // Keep existing properties (level, isExpanded, etc.)
+          ...node, // Merge in new properties (balance, totalReceived, totalSent)
+        };
+
+        return {
+          graphData: {
+            ...state.graphData,
+            nodes: updatedNodes,
+          },
+        };
+      }
+
+      // Node doesn't exist - add it
       return {
         graphData: {
           ...state.graphData,

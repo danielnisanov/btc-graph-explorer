@@ -8,7 +8,7 @@ export interface ApiLogEntry {
   method: string; // HTTP method (GET, POST, etc.)
   status?: number; // Response status code (200, 404, etc.)
   duration?: number; // Request duration in milliseconds
-  error?: string; // Error message if request failed
+  error?: string | Error; // Error message if request failed
   response?: unknown; // Response data (optional, can be large)
 }
 
@@ -29,7 +29,7 @@ export const useApiLogStore = create<ApiLogState>((set) => ({
   isExpanded: false,
   maxLogs: 100, // Keep last 100 logs
 
-  addLog: (log) =>
+  addLog: (log: Omit<ApiLogEntry, 'id' | 'timestamp'>) =>
     set((state) => {
       // Generate unique ID for this log entry
       const id = `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
