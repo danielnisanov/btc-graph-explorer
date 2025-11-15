@@ -5,8 +5,14 @@ export interface GraphNode {
   balance?: number;
   totalReceived?: number;
   totalSent?: number;
+  transactionCount?: number; // Total number of transactions for this address
   isExpanded: boolean;
   level: number; // Distance from root node
+
+  // Pagination tracking
+  loadedTransactions: number; // How many transactions have been loaded so far
+  currentOffset: number; // Current offset for pagination
+  hasMoreTransactions: boolean; // Whether more transactions are available
 }
 
 // Graph link representing a transaction

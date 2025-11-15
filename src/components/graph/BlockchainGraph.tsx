@@ -1,3 +1,4 @@
+// src/components/graph/BlockchainGraph.tsx
 'use client';
 
 import { use, useCallback } from 'react';
@@ -100,38 +101,3 @@ export function BlockchainGraph({ width = 1200, height = 600 }: BlockchainGraphP
     </div>
   );
 }
-
-//       {isGraphReady && (
-//         <div className="absolute bottom-4 left-4 bg-white/80 dark:bg-slate-800/70 backdrop-blur rounded-xl shadow-lg p-3 text-xs max-w-xs border border-slate-200/80 dark:border-slate-700/70">
-//           <div className="space-y-1.5">
-//             <div className="flex items-center gap-2">
-//               <div className="w-3 h-3 rounded-full bg-gray-400" />
-//               <span className="text-gray-700 dark:text-gray-300 text-xs">Unexpanded</span>
-//             </div>
-//             <div className="flex items-center gap-2">
-//               <div className="w-3 h-3 rounded-full bg-blue-400" />
-//               <span className="text-gray-700 dark:text-gray-300 text-xs">Expanded</span>
-//             </div>
-//             <div className="flex items-center gap-2">
-//               <div className="w-3 h-3 rounded-full bg-green-500" />
-//               <span className="text-gray-700 dark:text-gray-300 text-xs">Selected</span>
-//             </div>
-//             <div className="flex items-center gap-2">
-//               <div className="w-3 h-3 rounded-full bg-blue-600 animate-pulse" />
-//               <span className="text-gray-700 dark:text-gray-300 text-xs">Loading</span>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-
-//       {!isGraphReady && (
-//         <div className="absolute inset-0 flex items-center justify-center">
-//           <div className="text-center">
-//             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
-//             <p className="text-white">Loading graph...</p>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }

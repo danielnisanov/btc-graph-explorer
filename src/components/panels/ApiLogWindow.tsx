@@ -235,10 +235,11 @@ export function ApiLogWindow() {
             </div>
             <div>
               {`Avg duration: ${logs.filter((l) => l.duration).length > 0
-                ? Math.round(
-                    logs.reduce((sum, l) => sum + (l.duration || 0), 0) / logs.filter((l) => l.duration).length
-                  )
-                : 0} ms`}
+                  ? Math.round(
+                      logs.reduce((sum, l) => sum + (l.duration || 0), 0) / logs.filter((l) => l.duration).length
+                    )
+                  : 0
+              } ms`}
             </div>
           </div>
         </div>

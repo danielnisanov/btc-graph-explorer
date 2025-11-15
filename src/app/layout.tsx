@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 
 import './globals.css';
 
+import ErrorBoundary from '@/components/ui/ErrorBoundary';
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -20,7 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable}`}>{children}</body>
+      <body className={`${geistSans.variable}`}>
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </body>
     </html>
   );
 }

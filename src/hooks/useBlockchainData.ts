@@ -6,7 +6,7 @@ import { useGraphStore } from '@/store/graphStore';
 
 import type { GraphLink, GraphNode } from '@/types/graph';
 
-// Configuration for how many transactions to load
+// Configuration for how many transactions to load per request
 const DEFAULT_TRANSACTION_LIMIT = 10;
 
 export function useBlockchainData() {
@@ -15,7 +15,8 @@ export function useBlockchainData() {
   const [error, setError] = useState<string | null>(null);
 
   // Get actions from stores
-  const { addNode, addNodes, addLinks, setNodeExpanded, setNodeLoading, isNodeLoading } = useGraphStore();
+  const { addNode, addNodes, addLinks, setNodeExpanded, setNodeLoading, isNodeLoading, updateNodePagination, getNode } =
+    useGraphStore();
   const { addLog } = useApiLogStore();
 
   /**
@@ -30,9 +31,21 @@ export function useBlockchainData() {
   /**
    * Load blockchain data for a specific address and add it to the graph
    * This is the main function that fetches data and updates the graph
+   *
+   * @param address - Bitcoin address to load
+   * @param level - Graph level (distance from root)
+   * @param limit - Number of transactions to load
+   * @param offset - Offset for pagination (0 for first load)
+   * @param isLoadMore - Whether this is a "load more" request (appends data)
    */
   const loadAddressData = useCallback(
-    async (address: string, level = 0, limit: number = DEFAULT_TRANSACTION_LIMIT) => {
+    async (
+      address: string,
+      level = 0,
+      limit: number = DEFAULT_TRANSACTION_LIMIT,
+      offset: number = 0,
+      isLoadMore: boolean = false
+    ) => {
       // Track if this specific node is already loading
       if (isNodeLoading(address)) {
         console.log(`Address ${address} is already loading, skipping...`);
@@ -46,11 +59,11 @@ export function useBlockchainData() {
 
       // Track start time for performance logging
       const startTime = Date.now();
-      const requestUrl = `https://blockchain.info/rawaddr/${address}?limit=${limit}`;
+      const requestUrl = `https://blockchain.info/rawaddr/${address}?limit=${limit}&offset=${offset}`;
 
       try {
         // Fetch data from blockchain API
-        const data = await fetchAddressData(address, limit);
+        const data = await fetchAddressData(address, limit, offset);
 
         // Calculate request duration
         const duration = Date.now() - startTime;
@@ -66,22 +79,36 @@ export function useBlockchainData() {
             n_tx: data.n_tx,
             final_balance: data.final_balance,
             txs_count: data.txs.length,
+            offset,
           },
         });
 
-        // Create the main node for this address
-        const mainNode: GraphNode = {
-          id: address,
-          label: shortenAddress(address),
-          balance: data.final_balance,
-          totalReceived: data.total_received,
-          totalSent: data.total_sent,
-          isExpanded: false,
-          level,
-        };
+        // On first load, create/update the main node with full details
+        if (!isLoadMore) {
+          const mainNode: GraphNode = {
+            id: address,
+            label: shortenAddress(address),
+            balance: data.final_balance,
+            totalReceived: data.total_received,
+            totalSent: data.total_sent,
+            transactionCount: data.n_tx, // Total transactions for this address
+            isExpanded: false,
+            level,
+            loadedTransactions: data.txs.length,
+            currentOffset: offset + data.txs.length,
+            hasMoreTransactions: offset + data.txs.length < data.n_tx,
+          };
 
-        // Add main node to graph
-        addNode(mainNode);
+          // Add main node to graph
+          addNode(mainNode);
+        } else {
+          // On load more, just update pagination state
+          updateNodePagination(address, {
+            loadedTransactions: (getNode(address)?.loadedTransactions ?? 0) + data.txs.length,
+            currentOffset: offset + data.txs.length,
+            hasMoreTransactions: offset + data.txs.length < data.n_tx,
+          });
+        }
 
         // Extract related addresses and create nodes/links
         const relatedNodes: GraphNode[] = [];
@@ -106,6 +133,9 @@ export function useBlockchainData() {
                 label: shortenAddress(inputAddr),
                 isExpanded: false,
                 level: level + 1,
+                loadedTransactions: 0,
+                currentOffset: 0,
+                hasMoreTransactions: true,
               });
               processedAddresses.add(inputAddr);
             }
@@ -134,6 +164,9 @@ export function useBlockchainData() {
                 label: shortenAddress(outputAddr),
                 isExpanded: false,
                 level: level + 1,
+                loadedTransactions: 0,
+                currentOffset: 0,
+                hasMoreTransactions: true,
               });
               processedAddresses.add(outputAddr);
             }
@@ -153,10 +186,20 @@ export function useBlockchainData() {
         addNodes(relatedNodes);
         addLinks(links);
 
-        // Mark node as expanded after successful load
-        setNodeExpanded(address, true);
+        // Mark node as expanded after successful load (only on first load)
+        if (!isLoadMore) {
+          setNodeExpanded(address, true);
+        }
 
-        console.log(`Loaded ${relatedNodes.length} nodes and ${links.length} links for address ${address}`);
+        console.log(`
+📊 Loaded data for ${address}
+   Transactions: ${data.txs.length}
+   Offset: ${offset}
+   Loaded: ${offset + data.txs.length}/${data.n_tx}
+   New Nodes: ${relatedNodes.length}
+   New Links: ${links.length}
+   Has More: ${offset + data.txs.length < data.n_tx}
+        `);
       } catch (err) {
         // Handle errors
         const duration = Date.now() - startTime;
@@ -191,7 +234,7 @@ export function useBlockchainData() {
         setIsLoading(false);
       }
     },
-    [addNode, addNodes, addLinks, setNodeExpanded, setNodeLoading, isNodeLoading, addLog]
+    [addNode, addNodes, addLinks, setNodeExpanded, setNodeLoading, isNodeLoading, updateNodePagination, getNode, addLog]
   );
 
   /**
@@ -206,19 +249,48 @@ export function useBlockchainData() {
       }
 
       // Load the root address at level 0
-      await loadAddressData(address, 0);
+      await loadAddressData(address, 0, DEFAULT_TRANSACTION_LIMIT, 0, false);
     },
     [loadAddressData]
   );
 
   /**
-   * Expand a node - load its connections
+   * Expand a node - load its first batch of transactions
    */
   const expandNode = useCallback(
     async (address: string, currentLevel: number) => {
-      await loadAddressData(address, currentLevel + 1);
+      await loadAddressData(address, currentLevel + 1, DEFAULT_TRANSACTION_LIMIT, 0, false);
     },
     [loadAddressData]
+  );
+
+  /**
+   * Load more transactions for an already-expanded node
+   */
+  const loadMoreTransactions = useCallback(
+    async (address: string) => {
+      const node = getNode(address);
+
+      if (!node) {
+        console.error(`Node ${address} not found`);
+        return;
+      }
+
+      if (!node.hasMoreTransactions) {
+        console.log(`No more transactions for ${address}`);
+        return;
+      }
+
+      // Load next batch using current offset
+      await loadAddressData(
+        address,
+        node.level,
+        DEFAULT_TRANSACTION_LIMIT,
+        node.currentOffset,
+        true // isLoadMore = true
+      );
+    },
+    [loadAddressData, getNode]
   );
 
   return {
@@ -229,6 +301,7 @@ export function useBlockchainData() {
     // Actions
     loadInitialAddress,
     expandNode,
+    loadMoreTransactions, // New function for pagination
 
     // Helpers
     clearError: () => setError(null),

@@ -1,75 +1,84 @@
+Absolutely — here is the **final README.md**, fully formatted in clean Markdown, ready to paste directly into your project.
+
+I kept headings, lists, code blocks, tables, and spacing exactly how a professional GitHub README should look.
+
+---
+
 # 🪙 BTC Graph Explorer
 
 Interactive blockchain investigation tool that visualizes **Bitcoin transactions** as a dynamic graph.
-Built with **Next.js 16**, **React 19**, and **TypeScript**, it helps investigators explore wallet connections, follow transaction flows, and inspect address details in real time using a **server-side proxy with caching**.
+Built with **Next.js 16**, **React 19**, and **TypeScript**, it allows investigators to explore wallet connections, follow transaction flows, and inspect address details in real time using a **server-side proxy with caching**.
 
 ---
 
 ## 🚀 Features
 
-- 🔗 **Dynamic Graph Visualization** – Explore Bitcoin transaction networks visually with force-directed simulation.
-- 🧭 **Interactive Node Expansion** – Click a wallet to expand its connected transactions.
-- ⚡ **Smart Request Deduplication** – Prevents duplicate API calls when expanding nodes using `isNodeLoading` guard.
-- 💾 **Server-Side Caching** – 5-minute TTL in-memory cache reduces API load and improves response times (50-100x faster on cache hits).
-- 🛡️ **Rate Limiting** – Per-IP rate limiting (10 requests/minute) with user-friendly countdown timer.
-- 📊 **API Log Panel** – Real-time debugging with expandable log window showing requests, responses, and performance metrics.
-- 🪙 **Address Details Sidebar** – Full address information including balance, transaction statistics, and connected addresses.
-- 🎮 **Graph Controls** – Zoom in/out, fit-to-screen, pan, and center controls for easy navigation.
-- 🌀 **Loading States & Error Handling** – Clear UI feedback, rate limit warnings, and graceful error messages.
-- 🧩 **Modular Architecture** – Built with custom hooks and component separation for maintainability and scalability.
+* 🔗 **Dynamic Graph Visualization** – Explore Bitcoin transaction networks with force-directed layouts.
+* 🧭 **Interactive Node Expansion** – Click any wallet to expand transactions & connected addresses.
+* ⚡ **Smart Request Deduplication** – Guards against duplicate API calls using `isNodeLoading`.
+* 💾 **Server-Side Caching** – 5-minute in-memory caching (50–100× faster on cache hits).
+* 🛡️ **Rate Limiting** – Per-IP rate limiting (10 req/min) with UI countdown.
+* 📊 **API Log Panel** – Real-time panel showing requests, responses, errors, and timings.
+* 🪙 **Address Sidebar** – Shows balance, total received, total sent, tx count, and connections.
+* 🎮 **Graph Controls** – Zoom in/out, fit-to-screen, pan, center camera.
+* 🌀 **Loading States & Error Handling** – UI feedback, retry suggestions, rate-limit warnings.
+* 🧩 **Modular Architecture** – Clean structure with hooks, components, stores, and utilities.
+* 🧪 **Full Test Suite** – Includes unit tests, component tests, and Playwright E2E testing.
 
 ---
 
 ## 🧠 Tech Stack
 
-| Area | Technology |
-|------|-------------|
-| Framework | [Next.js 16](https://nextjs.org/) with Turbopack |
-| Language | [TypeScript 5.9](https://www.typescriptlang.org/) |
-| React | [React 19.2](https://react.dev/) with Hooks |
-| Graph Library | [force-graph 1.51](https://github.com/vasturiano/force-graph) |
-| State Management | [Zustand 5.0](https://github.com/pmndrs/zustand) |
-| Data Source | [Mempool.space API](https://mempool.space/api) (with fallback to Blockchair) |
-| Styling | [Tailwind CSS](https://tailwindcss.com/) |
-| Package Manager | [pnpm](https://pnpm.io/) |
+| Area             | Technology                               |
+| ---------------- | ---------------------------------------- |
+| Framework        | Next.js 16 (Turbopack)                   |
+| Language         | TypeScript 5.9                           |
+| React            | React 19.2 (Hooks)                       |
+| Graph Library    | force-graph 1.51                         |
+| State Management | Zustand 5.0                              |
+| API Source       | Mempool.space API (fallback: Blockchair) |
+| Styling          | Tailwind CSS                             |
+| Package Manager  | pnpm                                     |
+| Unit Tests       | Vitest + React Testing Library           |
+| E2E Tests        | Playwright                               |
 
 ---
 
-## 📋 Project Structure
+## 📁 Project Structure
 
 ```
 src/
 ├── app/
 │   ├── api/blockchain/
-│   │   └── route.ts             # Server-side proxy with caching & rate limiting
-│   ├── globals.css              # Global Tailwind styles
-│   ├── layout.tsx               # Root layout with providers
-│   └── page.tsx                 # Main page with grid layout
+│   │   └── route.ts             # Proxy with caching & rate limiting
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
 ├── components/
 │   ├── graph/
-│   │   ├── BlockchainGraph.tsx  # Main force-graph visualization
-│   │   ├── GraphControls.tsx    # Zoom/fit/center control buttons
-│   │   ├── GraphLegend.tsx      # Node state legend
-│   │   └── GraphLoadingState.tsx # Loading skeleton
+│   │   ├── BlockchainGraph.tsx
+│   │   ├── GraphControls.tsx
+│   │   ├── GraphLegend.tsx
+│   │   └── GraphLoadingState.tsx
 │   ├── panels/
-│   │   ├── AddressDetails.tsx   # Address info sidebar with balance
-│   │   └── ApiLogWindow.tsx     # API debugging panel
-│   ├── SearchBar.tsx            # Bitcoin address search input with rate limit UI
-│   └── ui/                      # Reusable UI components
+│   │   ├── AddressDetails.tsx
+│   │   └── ApiLogWindow.tsx
+│   ├── SearchBar.tsx
+│   └── ui/
 ├── hooks/
-│   ├── useBlockchainData.ts     # Data fetching & graph expansion logic
-│   ├── useGraphInstance.ts      # Force-graph initialization and setup
-│   ├── useGraphData.ts          # Graph data update logic
-│   └── useGraphVisuals.ts       # Node color/size update logic
+│   ├── useBlockchainData.ts
+│   ├── useGraphInstance.ts
+│   ├── useGraphData.ts
+│   └── useGraphVisuals.ts
 ├── store/
-│   ├── graphStore.ts            # Zustand store: graph state, node selection
-│   └── apiLogStore.ts           # Zustand store: API logging
+│   ├── graphStore.ts
+│   └── apiLogStore.ts
 ├── services/
 │   └── blockchain/
-│       └── blockchainApi.ts     # Blockchain API client with error handling
+│       └── blockchainApi.ts
 ├── types/
-│   ├── blockchain.ts            # Bitcoin transaction & address types
-│   └── graph.ts                 # Graph node, link, and data types
+│   ├── blockchain.ts
+│   └── graph.ts
 └── utils/
 ```
 
@@ -77,42 +86,41 @@ src/
 
 ## 🎯 Key Architecture Decisions
 
-### Server-Side Proxy (`/api/blockchain`)
+### 🖥️ Server-Side Proxy (`/api/blockchain`)
 
-All blockchain API calls go through a Next.js server-side proxy that:
+The proxy handles:
 
-1. **Caches Responses** – 5-minute TTL in-memory cache with automatic cleanup
-2. **Rate Limits Clients** – Per-IP rate limiting to prevent abuse
-3. **Throttles Upstream Calls** – 1.5-second delays between blockchain API requests
-4. **Supports Fallbacks** – Primary: Mempool.space, Secondary: Blockchair, Tertiary: Blockchain.info
-5. **Tracks Statistics** – Monitors cache hits/misses, upstream calls, and rate limit events
+1. **Caching** (5-minute TTL)
+2. **Rate-limiting** (10 req/min per IP)
+3. **Throttling** upstream calls (1.5 seconds between calls)
+4. **Failover** to Blockchair / Blockchain.info
+5. **Centralized error handling & logging**
 
 **Benefits:**
-- Eliminates CORS issues (all requests to same origin)
-- Reduces API load through intelligent caching
-- Protects against rate limits through request throttling
-- Centralized error handling and logging
 
-### Request Deduplication
+* Eliminates CORS
+* Reduces external API usage
+* Prevents rate-limit lockouts
+* Makes UI faster & more reliable
 
-The `AddressDetails` component includes a guard that checks `isNodeLoading()` before fetching balance data. This prevents duplicate requests when a node is already being loaded by the `expandNode` action:
+### 🧩 Request Deduplication
 
-```typescript
+Nodes fetch data **once** thanks to:
+
+```ts
 if (missingBalance && !isFetchingBalance && !isNodeLoading(selectedNode.id)) {
-  // Fetch balance - only if not already loading from expansion
+  fetchBalance();
 }
 ```
 
-**Result:** Each node expansion = 1 API call (not 5+)
+Prevents repeated fetches when UI re-renders.
 
-### State Management with Zustand
+### 🗂️ Zustand Stores
 
-Two main stores maintain application state:
+* **graphStore** → nodes, links, selection, loading, pagination
+* **apiLogStore** → logs requests for the API Debug Panel
 
-1. **graphStore** – Manages graph data, selected nodes, and loading state
-2. **apiLogStore** – Tracks API calls for debugging
-
-Both are lightweight and performant, enabling real-time updates without prop drilling.
+Lightweight, dependency-free, perfect for real-time updates.
 
 ---
 
@@ -120,26 +128,21 @@ Both are lightweight and performant, enabling real-time updates without prop dri
 
 ### Prerequisites
 
-- **Node.js** 18+ (or 20+)
-- **pnpm** 8+ (recommended) or npm 9+
+* Node.js 18+
+* pnpm 8+
 
-### Installation
+### Install & Run
 
 ```bash
-# Clone the repository
 git clone https://github.com/danielnisanov/btc-graph-explorer.git
 cd btc-graph-explorer
-
-# Install dependencies
 pnpm install
-
-# Run development server
 pnpm dev
-
-# Open browser - http://localhost:3000
 ```
 
-### Build for Production
+Visit → **[http://localhost:3000](http://localhost:3000)**
+
+### Build & Start
 
 ```bash
 pnpm build
@@ -150,138 +153,158 @@ pnpm start
 
 ## 📖 Usage
 
-1. **Search for an Address**
-   - Enter a Bitcoin address in the search bar (e.g., `1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa`)
-   - Or click "Try sample" to load Satoshi's first address
-   - Address data loads and displays as a graph
+### 1️⃣ Search
 
-2. **Expand Nodes**
-   - Click any node (wallet address) in the graph
-   - The node expands to show its connected transactions
-   - Loading indicator shows while fetching data
-   - Connected addresses appear as new nodes
+* Enter a Bitcoin address
+* Or click **Try Sample** (Satoshi’s first address)
 
-3. **View Address Details**
-   - Selected node information appears in the right sidebar
-   - Shows balance, transaction counts, and connected addresses
-   - Click connected addresses to navigate
+### 2️⃣ Explore Graph
 
-4. **Use Graph Controls**
-   - **Fit** – Zoom to fit all nodes on screen
-   - **Zoom In/Out** – Manual zoom control
-   - **Center** – Return to origin (0, 0)
-   - **Pan** – Hold middle mouse button and drag
+* Click nodes to expand them
+* Loading animation shows while fetching
 
-5. **Debug API Calls**
-   - Check the API Log panel at bottom-right
-   - Expand logs to view request/response details
-   - Monitor cache hits vs. upstream calls
-   - View request duration and status codes
+### 3️⃣ Inspect Address Details
+
+Sidebar includes:
+
+* Balance
+* Total received / sent
+* Tx count
+* Connected addresses
+
+### 4️⃣ Graph Controls
+
+* Fit
+* Zoom In / Out
+* Center
+* Drag to pan
+
+### 5️⃣ Debug Panel
+
+Bottom-right:
+
+* View all API requests
+* See cache hits/misses
+* Inspect timings and errors
 
 ---
 
 ## 🔧 Configuration
 
-### Server-Side Proxy Settings
+### Proxy Settings
 
-Edit `src/app/api/blockchain/route.ts` to adjust:
+`src/app/api/blockchain/route.ts`:
 
-```typescript
-const CACHE_TTL = 5 * 60 * 1000;              // Cache duration (5 minutes)
-const RATE_LIMIT_WINDOW = 60 * 1000;          // Rate limit window (1 minute)
-const MAX_REQUESTS_PER_WINDOW = 10;           // Max requests per IP per window
-const REQUEST_DELAY = 1500;                   // Delay between upstream calls (1.5s)
+```ts
+const CACHE_TTL = 5 * 60 * 1000;
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 10;
+const REQUEST_DELAY = 1500;
 ```
 
-### Graph Settings
+### Graph Physics
 
-Edit `src/hooks/useGraphInstance.ts` to customize:
+`src/hooks/useGraphInstance.ts`:
 
-```typescript
-.cooldownTicks(100)                           // Simulation iterations
-.nodeRelSize(8)                               // Node size
-.linkDistance(100)                            // Link length
-.chargeStrength(-300)                         // Node repulsion
+```ts
+.cooldownTicks(100)
+.nodeRelSize(8)
+.linkDistance(100)
+.chargeStrength(-300)
+```
+
+---
+
+## 🧪 Testing
+
+### ▶ Unit Tests
+
+Run:
+
+```bash
+pnpm test
+```
+
+Covers:
+
+* Blockchain API proxy
+* SearchBar validation & behavior
+* BlockchainGraph rendering & interactions
+* Full graphStore logic (merging, pagination, loading state)
+
+### ▶ End-to-End Tests (Playwright)
+
+Run:
+
+```bash
+pnpm exec playwright test
+```
+
+E2E includes:
+
+* Explore address → graph loads
+* Rate limit handling (429)
+* API failure (500)
+* Invalid address validation
+* Reload & back navigation stability
+* No console errors
+* Deterministic API stubbing:
+
+```ts
+page.route('**/api/blockchain**', route =>
+  route.fulfill({ status: 200, body: JSON.stringify(stubGraphResponse) })
+);
 ```
 
 ---
 
 ## 📊 Performance Metrics
 
-### Cache Performance
-
-- **Cache Hit**: 5-10ms response time
-- **Cache Miss (Upstream)**: 500-600ms response time
-- **Speed Improvement**: 50-100x faster on cache hits
-
-### Request Patterns
-
-- **Fresh Address**: 1 API call to upstream + 1 cache store
-- **Re-expansion (within 5 min)**: 100% cache hit, 0 upstream calls
-- **Multi-tab Access**: Shares cache across browser tabs
+| Event      | Time       |
+| ---------- | ---------- |
+| Cache Hit  | 5–10 ms    |
+| Cache Miss | 500–600 ms |
+| Speedup    | 50–100×    |
 
 ---
 
-## 🐛 Debugging
+## 🎨 UI/UX
 
-### Console Logging
+### Node Colors
 
-All major components log to console:
-
-- `🔹 [REQUEST #N]` – Proxy request lifecycle
-- `✅ CACHE HIT` – Data served from cache
-- `❌ CACHE MISS` – Upstream API call made
-- `⛔ CLIENT RATE LIMITED` – Too many requests from IP
-- `📊 Fetching balance...` – AddressDetails data load
-
-### API Log Window
-
-The bottom-right API log panel shows:
-
-- Request method, URL, and timestamp
-- Response status code and duration
-- Error messages and helpful suggestions
-- Success/error counts and average response time
-
----
-
-## 🎨 UI/UX Features
+| State      | Color        |
+| ---------- | ------------ |
+| Unexpanded | Gray         |
+| Expanded   | Light Blue   |
+| Selected   | Green        |
+| Loading    | Blue (pulse) |
 
 ### Layout
 
-- **Header**: SearchBar with address input and rate limit countdown
-- **Main Content Grid (2 columns)**:
-  - Left sidebar (360px): AddressDetails panel
-  - Right section: BlockchainGraph visualization
-- **Bottom Right**: ApiLogWindow (expandable/collapsible)
-
-### Visual Indicators
-
-| State | Color | Meaning |
-|-------|-------|---------|
-| Unexpanded | Gray | Node not yet explored |
-| Expanded | Light Blue | Node has connected transactions |
-| Selected | Green | Currently selected node |
-| Loading | Blue (pulsing) | Fetching data in progress |
+* Header → SearchBar
+* Left → AddressDetails
+* Right → BlockchainGraph
+* Bottom-right → API Log panel
 
 ---
 
-## 🔒 Security & Best Practices
+## 🔒 Security
 
-1. **No Private Keys Stored** – Read-only blockchain data only
-2. **Rate Limiting** – Prevents API abuse and excessive requests
-3. **Server-Side Proxy** – Hides API endpoints from client
-4. **CORS Protected** – All requests go through same origin
-5. **Error Boundaries** – Graceful error handling throughout
-6. **Input Validation** – Bitcoin addresses validated before use
+* Read-only blockchain data
+* No private keys ever stored
+* Proxy hides upstream API keys
+* Strict validation & rate limiting
+* Error boundaries throughout UI
 
 ---
 
-## 📚 Resources & References
+## 📚 References
 
-- [Bitcoin Address Formats](https://en.bitcoin.it/wiki/Address)
-- [Mempool.space API Docs](https://mempool.space/docs/api)
-- [Force-graph Documentation](https://github.com/vasturiano/force-graph)
-- [Next.js 16 Documentation](https://nextjs.org/docs)
-- [Zustand State Management](https://github.com/pmndrs/zustand)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+* [https://en.bitcoin.it/wiki/Address](https://en.bitcoin.it/wiki/Address)
+* [https://mempool.space/docs/api](https://mempool.space/docs/api)
+* [https://github.com/vasturiano/force-graph](https://github.com/vasturiano/force-graph)
+* [https://nextjs.org/docs](https://nextjs.org/docs)
+* [https://github.com/pmndrs/zustand](https://github.com/pmndrs/zustand)
+* [https://tailwindcss.com/docs](https://tailwindcss.com/docs)
+
+---
