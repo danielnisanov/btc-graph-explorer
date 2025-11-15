@@ -30,7 +30,7 @@ Built with **Next.js 16**, **React 19**, and **TypeScript**, it allows investiga
 | React            | React 19.2 (Hooks)                       |
 | Graph Library    | force-graph 1.51                         |
 | State Management | Zustand 5.0                              |
-| API Source       | Mempool.space API (fallback: Blockchair) |
+| API Source       | BlockChain API                           |
 | Styling          | Tailwind CSS                             |
 | Package Manager  | pnpm                                     |
 | Unit Tests       | Vitest + React Testing Library           |

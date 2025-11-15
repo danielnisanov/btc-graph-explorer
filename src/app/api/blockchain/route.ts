@@ -279,63 +279,18 @@ export async function GET(request: NextRequest) {
 
     requestStats.cacheMisses++;
     requestStats.upstreamRequests++;
-//     console.log(`
-// ❌ [REQUEST #${requestStats.totalRequests}] CACHE MISS - FETCHING FROM BLOCKCHAIN.INFO
-//    Address: ${address}
-//    Upstream Requests So Far: ${requestStats.upstreamRequests}
-//    Cache Hits: ${requestStats.cacheHits} | Misses: ${requestStats.cacheMisses}
-//       `);
 
     console.log(`
-❌ [REQUEST #${requestStats.totalRequests}] CACHE MISS - FETCHING FROM MEMPOOL.SPACE
+❌ [REQUEST #${requestStats.totalRequests}] CACHE MISS - FETCHING FROM BLOCKCHAIN.INFO
    Address: ${address}
    Upstream Requests So Far: ${requestStats.upstreamRequests}
    Cache Hits: ${requestStats.cacheHits} | Misses: ${requestStats.cacheMisses}
       `);
 
-    // // Fetch from blockchain.info with throttling
-    // const data = await throttledRequest(async () => {
-    //   const url = `https://blockchain.info/rawaddr/${address}?limit=${limit}&offset=${offset}`; //BLOCKCHAIN.INFO
-    //   // const url = `https://mempool.space/api/address/${address}/txs`; // MEMPOOL.SPACE
-    //   return await fetchFromBlockchain(url);
-    // });
-
-    // Fetch from mempool.space with throttling
+    // Fetch from blockchain.info with throttling
     const data = await throttledRequest(async () => {
-      // Mempool.space requires two API calls
-      const addressUrl = `https://mempool.space/api/address/${address}`;
-      const txsUrl = `https://mempool.space/api/address/${address}/txs`;
-
-      // Fetch both address info and transactions
-      const [addressInfo, txs] = await Promise.all([fetchFromBlockchain(addressUrl), fetchFromBlockchain(txsUrl)]);
-
-      // Transform to blockchain.info format
-      return {
-        address: address,
-        n_tx: (addressInfo.chain_stats?.tx_count || 0) + (addressInfo.mempool_stats?.tx_count || 0),
-        total_received: (addressInfo.chain_stats?.funded_txo_sum || 0) + (addressInfo.mempool_stats?.funded_txo_sum || 0),
-        total_sent: (addressInfo.chain_stats?.spent_txo_sum || 0) + (addressInfo.mempool_stats?.spent_txo_sum || 0),
-        final_balance:
-          (addressInfo.chain_stats?.funded_txo_sum || 0) -
-          (addressInfo.chain_stats?.spent_txo_sum || 0) +
-          (addressInfo.mempool_stats?.funded_txo_sum || 0) -
-          (addressInfo.mempool_stats?.spent_txo_sum || 0),
-        txs: (txs.slice(offset, offset + limit) || []).map((tx: any) => ({
-          hash: tx.txid,
-          time: tx.status?.block_time || Date.now() / 1000,
-          block_height: tx.status?.block_height || 0,
-          inputs: (tx.vin || []).map((input: any) => ({
-            prev_out: {
-              addr: input.prevout?.scriptpubkey_address,
-              value: input.prevout?.value
-            },
-          })),
-          out: (tx.vout || []).map((output: any) => ({
-            addr: output.scriptpubkey_address,
-            value: output.value,
-          })),
-        })),
-      };
+      const url = `https://blockchain.info/rawaddr/${address}?limit=${limit}&offset=${offset}`;
+      return await fetchFromBlockchain(url);
     });
 
     // Cache the result
@@ -365,9 +320,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           error: error.message,
-          // suggestion: 'The blockchain.info API is rate limiting requests. Try again in a few moments.',
-          suggestion: 'The mempool.space API is rate limiting requests. Try again in a few moments.',
-
+          suggestion: 'The blockchain.info API is rate limiting requests. Try again in a few moments.',
         },
         { status: 429 }
       );
