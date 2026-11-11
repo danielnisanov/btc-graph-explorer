@@ -1,14 +1,16 @@
 {
-  "name": "typescript-nextjs-starter",
-  "description": "A TypeScript starter for Next.js that includes all you need to build amazing projects",
+  "name": "btc-graph-explorer",
+  "description": "Interactive Bitcoin transaction graph explorer built with Next.js, React, and TypeScript, featuring blockchain API integration, caching, and graph visualization.",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "author": "João Pedro Schmitz (@jpedroschmitz)",
   "license": "MIT",
   "keywords": [
+    "bitcoin",
+    "blockchain",
+    "graph-visualization",
     "nextjs",
-    "starter",
+    "react",
     "typescript"
   ],
   "scripts": {

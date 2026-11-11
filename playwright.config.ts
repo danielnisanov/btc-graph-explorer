@@ -8,7 +8,7 @@ export default defineConfig({
   // only run files that end with .e2e.spec.ts
   testMatch: '**/*.e2e.spec.ts',
   // ignore all unit-test folders
-  ignore: ['src/**'],
+  testIgnore: ['src/**'],
   use: {
     baseURL: 'http://localhost:3000',
     headless: true,
