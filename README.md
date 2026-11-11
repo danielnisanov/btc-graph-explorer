@@ -7,17 +7,17 @@ Built with **Next.js 16**, **React 19**, and **TypeScript**, it allows investiga
 
 ## 🚀 Features
 
-* 🔗 **Dynamic Graph Visualization** – Explore Bitcoin transaction networks with force-directed layouts.
-* 🧭 **Interactive Node Expansion** – Click any wallet to expand transactions & connected addresses.
-* ⚡ **Smart Request Deduplication** – Guards against duplicate API calls using `isNodeLoading`.
-* 💾 **Server-Side Caching** – 5-minute in-memory caching (50–100× faster on cache hits).
-* 🛡️ **Rate Limiting** – Per-IP rate limiting (10 req/min) with UI countdown.
-* 📊 **API Log Panel** – Real-time panel showing requests, responses, errors, and timings.
-* 🪙 **Address Sidebar** – Shows balance, total received, total sent, tx count, and connections.
-* 🎮 **Graph Controls** – Zoom in/out, fit-to-screen, pan, center camera.
-* 🌀 **Loading States & Error Handling** – UI feedback, retry suggestions, rate-limit warnings.
-* 🧩 **Modular Architecture** – Clean structure with hooks, components, stores, and utilities.
-* 🧪 **Full Test Suite** – Includes unit tests, component tests, and Playwright E2E testing.
+*  **Dynamic Graph Visualization** – Explore Bitcoin transaction networks with force-directed layouts.
+*  **Interactive Node Expansion** – Click any wallet to expand transactions & connected addresses.
+*  **Smart Request Deduplication** – Guards against duplicate API calls using `isNodeLoading`.
+*  **Server-Side Caching** – 5-minute in-memory caching (50–100× faster on cache hits).
+*  **Rate Limiting** – Per-IP rate limiting (10 req/min) with UI countdown.
+*  **API Log Panel** – Real-time panel showing requests, responses, errors, and timings.
+*  **Address Sidebar** – Shows balance, total received, total sent, tx count, and connections.
+*  **Graph Controls** – Zoom in/out, fit-to-screen, pan, center camera.
+*  **Loading States & Error Handling** – UI feedback, retry suggestions, rate-limit warnings.
+*  **Modular Architecture** – Clean structure with hooks, components, stores, and utilities.
+*  **Full Test Suite** – Includes unit tests, component tests, and Playwright E2E testing.
 
 ---
 
