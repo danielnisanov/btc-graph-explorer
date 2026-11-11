@@ -152,10 +152,16 @@ pnpm start
 * Enter a Bitcoin address
 * Or click **Try Sample** (Satoshi’s first address)
 
+  <img width="1422" height="1185" alt="image" src="https://github.com/user-attachments/assets/1d8dcc7d-209f-4e59-9bab-0acbbfeff6ff" />
+
+
 ### 2️⃣ Explore Graph
 
 * Click nodes to expand them
 * Loading animation shows while fetching
+
+  <img width="1407" height="1233" alt="image" src="https://github.com/user-attachments/assets/ffbb29fa-ad26-4b99-a95a-d07e5ef69979" />
+
 
 ### 3️⃣ Inspect Address Details
 
